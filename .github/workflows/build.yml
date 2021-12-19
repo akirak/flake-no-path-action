@@ -29,7 +29,7 @@ jobs:
 
     - name: Push image
       run: |
-        IMAGE_ID=ghcr.io/${{ github.repository }}
+        IMAGE_ID=ghcr.io/${{ github.repository_owner }}/flake-no-path-action
         VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
         [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
         # Use Docker `latest` tag convention
