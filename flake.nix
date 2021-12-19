@@ -44,16 +44,6 @@
       rec {
         packages = flake-utils.lib.flattenTree {
           inherit flake-no-path;
-          image = pkgs.dockerTools.buildImage {
-            name = "flake-no-path";
-            tag = "latest";
-            created = "now";
-            config = {
-              Cmd = [
-                "${self.packages.x86_64-linux.flake-no-path}/bin/flake-no-path"
-              ];
-            };
-          };
         };
         defaultPackage = flake-no-path;
         checks = {
