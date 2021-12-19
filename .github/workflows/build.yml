@@ -4,7 +4,7 @@ on:
   push:
     paths-ignore:
       - '*.org'
-      # - '.github/**'
+      - '.github/**'
 
 jobs:
   build-and-push-image:
@@ -38,4 +38,4 @@ jobs:
         echo VERSION=$VERSION
         docker tag flake-no-path:latest $IMAGE_ID:$VERSION
         docker push $IMAGE_ID:$VERSION
-      # if: ${{ github.ref == 'refs/heads/master' }}
+      if: ${{ github.ref == 'refs/heads/master' }}
