@@ -24,13 +24,36 @@
       let
         pkgs = import nixpkgs { inherit system; };
 
-        flake-no-path = pkgs.writeShellScriptBin "flake-no-path" ''
-          exec ${pkgs.deno}/bin/deno run --allow-env --allow-read ${./main.ts} "$@"
-        '';
+        flake-no-path = pkgs.writeShellApplication {
+          name = "flake-no-path";
+          runtimeInputs = [
+            pkgs.deno
+            pkgs.fd
+          ];
+          text = ''
+            if [[ $# -eq 0 ]]
+            then
+              fd --one-file-system flake.lock \
+               | xargs deno run --allow-env --allow-read ${./main.ts}
+            else
+              exec deno run --allow-env --allow-read ${./main.ts} "$@"
+            fi
+          '';
+        };
       in
       rec {
         packages = flake-utils.lib.flattenTree {
           inherit flake-no-path;
+          image = pkgs.dockerTools.buildImage {
+            name = "flake-no-path";
+            tag = "latest";
+            created = "now";
+            config = {
+              Cmd = [
+                "${self.packages.x86_64-linux.flake-no-path}/bin/flake-no-path"
+              ];
+            };
+          };
         };
         defaultPackage = flake-no-path;
         checks = {
