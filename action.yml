@@ -1,0 +1,7 @@
+name: 'flake-no-path'
+author: 'Akira Komamura'
+description: 'Check if there is no path reference in flake.lock'
+runs:
+  using: docker
+  image: 'docker://ghcr.io/akirak/flake-no-path-action'
+  entrypoint: '/bin/bash'
