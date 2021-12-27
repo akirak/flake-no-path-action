@@ -6,9 +6,7 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
   inputs.pre-commit-hooks = {
-    # The latest version brings the following error:
-    # `pre-commit` not found.  Did you forget to activate your virtualenv?
-    url = "github:cachix/pre-commit-hooks.nix/50cfce93606c020b9e69dce24f039b39c34a4c2d";
+    url = "github:cachix/pre-commit-hooks.nix";
     inputs.nixpkgs.follows = "nixpkgs";
     inputs.flake-utils.follows = "flake-utils";
   };
