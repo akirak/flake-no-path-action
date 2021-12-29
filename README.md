@@ -16,17 +16,17 @@ You can combine it with [pre-commit-hooks.nix](https://github.com/cachix/pre-com
 
 ```nix
    pre-commit-check = pre-commit-hooks.lib.${system}.run {
-            src = ./.;
-            hooks = {
-              nixpkgs-fmt.enable = true;
-              nix-linter.enable = true;
-              flake-no-path = {
-                enable = true;
-                name = "Ensure that flake.lock does not contain a local path";
-                entry = "${flake-no-path}/bin/flake-no-path";
-                files = "flake\.lock$";
-                pass_filenames = true;
-              };
-            };
-          };
+     src = ./.;
+     hooks = {
+       nixpkgs-fmt.enable = true;
+       nix-linter.enable = true;
+       flake-no-path = {
+         enable = true;
+         name = "Ensure that flake.lock does not contain a local path";
+         entry = "${flake-no-path}/bin/flake-no-path";
+         files = "flake\.lock$";
+         pass_filenames = true;
+       };
+     };
+   };
 ```
