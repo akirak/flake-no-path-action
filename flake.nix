@@ -17,16 +17,17 @@
     , flake-utils
     , pre-commit-hooks
     }:
+    {
+      overlay = _final: prev: {
+        flake-no-path = prev.callPackage ./release.nix { };
+      };
+    } //
     flake-utils.lib.eachDefaultSystem
       (system:
       let
-        overlay = _final: prev: {
-          flake-no-path = prev.callPackage ./release.nix { };
-        };
-
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ overlay ];
+          overlays = [ self.overlay ];
         };
       in
       {
@@ -34,8 +35,6 @@
           inherit (pkgs) flake-no-path;
         };
         defaultPackage = pkgs.flake-no-path;
-
-        inherit overlay;
 
         checks = {
           pre-commit-check = pre-commit-hooks.lib.${system}.run {
