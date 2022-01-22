@@ -20,30 +20,23 @@
     flake-utils.lib.eachDefaultSystem
       (system:
       let
-        pkgs = import nixpkgs { inherit system; };
+        overlay = _final: prev: {
+          flake-no-path = prev.callPackage ./release.nix { };
+        };
 
-        flake-no-path = pkgs.writeShellApplication {
-          name = "flake-no-path";
-          runtimeInputs = [
-            pkgs.deno
-            pkgs.fd
-          ];
-          text = ''
-            if [[ $# -eq 0 ]]
-            then
-              fd --one-file-system flake.lock \
-               | xargs deno run --allow-env --allow-read ${./main.ts}
-            else
-              exec deno run --allow-env --allow-read ${./main.ts} "$@"
-            fi
-          '';
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ overlay ];
         };
       in
-      rec {
+      {
         packages = flake-utils.lib.flattenTree {
-          inherit flake-no-path;
+          inherit (pkgs) flake-no-path;
         };
-        defaultPackage = flake-no-path;
+        defaultPackage = pkgs.flake-no-path;
+
+        inherit overlay;
+
         checks = {
           pre-commit-check = pre-commit-hooks.lib.${system}.run {
             src = ./.;
@@ -67,7 +60,7 @@
               flake-no-path = {
                 enable = true;
                 name = "Ensure that flake.lock does not contain a local path";
-                entry = "${flake-no-path}/bin/flake-no-path";
+                entry = "${pkgs.flake-no-path}/bin/flake-no-path";
                 files = "flake\.lock$";
                 pass_filenames = true;
               };
