@@ -40,7 +40,7 @@ async function checkFlakeLock(filepath: string): Promise<boolean> {
       .entries(lock.nodes)
       .map(([name, data]) => ({ name, data } as { name: string; data: NodeData }))
   // The root node does not have locked property
-      .filter(({ data }) => !!data.locked?.path && data.locked.path[0] === "/")
+      .filter(({ data }) => !!data.locked?.path && data.locked.path[0] === "/" && ! /^\/nix\/store\//.test(data.locked.path))
 
   for (const node of pathNodes) {
     console.error(`${styles.red.open}\
