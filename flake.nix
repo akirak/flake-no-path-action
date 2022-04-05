@@ -40,8 +40,8 @@
           pre-commit-check = pre-commit-hooks.lib.${system}.run {
             src = ./.;
             hooks = {
-              nixpkgs-fmt.enable = true;
-              nix-linter.enable = true;
+              alejandra.enable = true;
+              statix.enable = true;
               deno-fmt = {
                 enable = true;
                 name = "Reformat deno code";
