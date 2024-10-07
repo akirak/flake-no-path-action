@@ -10,8 +10,9 @@
       "automerge": true
     },
     {
-      "matchDatasources": ["github-actions"],
+      "matchManagers": ["github-actions"],
       "groupName": "actions",
+      "separateMajorMinor": false,
       "automerge": true
     }
   ],
