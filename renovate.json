@@ -1,12 +1,15 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
+  "extends": [
+    "config:recommended",
+    "helpers:pinGitHubActionDigests"
+  ],
   "labels": ["automation", "dependencies"],
   "packageRules": [
     {
       "matchUpdateTypes": ["lockFileMaintenance"],
       "groupName": "Maintenance",
-      "extends": ["schedule:earlyMondays"],
+      "extends": ["schedule:weekly"],
       "automerge": true
     },
     {
@@ -15,6 +18,9 @@
       "separateMajorMinor": false,
       "automerge": true
     }
+  ],
+  "automergeSchedule": [
+    "before 7pm"
   ],
   "lockFileMaintenance": {
     "enabled": true
